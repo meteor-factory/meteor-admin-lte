@@ -7,13 +7,26 @@ var screenSizes = {
 
 Template.AdminLTE.onCreated(function () {
   var self = this;
-  var skin = (self.data && self.data.skin) || 'blue';
+  var skin = 'blue';
+  var fixed = false;
+  var sidebarMini = false;
+
+  if (this.data) {
+    skin = this.data.skin || skin;
+    fixed = this.data.fixed || fixed;
+    sidebarMini = this.data.sidebarMini || sidebarMini;
+  }
 
   self.isReady = new ReactiveVar(false);
   self.style = waitOnCSS(cssUrl());
   self.skin = waitOnCSS(skinUrl(skin));
 
-  $('body').addClass('fixed');
+  fixed && $('body').addClass('fixed');
+  sidebarMini && $('body').addClass('sidebar-mini');
+  self.removeClasses = function () {
+    fixed && $('body').removeClass('fixed');
+    sidebarMini && $('body').removeClass('sidebar-mini');
+  }
 
   this.autorun(function () {
     if (self.style.ready() && self.skin.ready()) {
@@ -23,7 +36,7 @@ Template.AdminLTE.onCreated(function () {
 });
 
 Template.AdminLTE.onDestroyed(function () {
-  $('body').removeClass('fixed');
+  this.removeClasses();
   this.style.remove();
   this.skin.remove();
 });
