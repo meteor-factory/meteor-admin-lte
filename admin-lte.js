@@ -129,8 +129,9 @@ function skinUrl (name) {
     'packages/mfactory_admin-lte/css/skins/skin-' + name + '.min.css');
 }
 
-function waitOnCSS (url) {
+function waitOnCSS (url, timeout) {
   var isLoaded = new ReactiveVar(false);
+  timeout = timeout || 5000;
 
   var link = document.createElement('link');
   link.type = 'text/css';
@@ -154,6 +155,18 @@ function waitOnCSS (url) {
       isLoaded.set(true);
     }
   };
+
+  var cssnum = document.styleSheets.length;
+  var ti = setInterval(function () {
+    if (document.styleSheets.length > cssnum) {
+      isLoaded.set(true);
+      clearInterval(ti);
+    }
+  }, 10);
+
+  setTimeout(function () {
+    isLoaded.set(true);
+  }, timeout);
 
   $(document.head).append(link);
 
