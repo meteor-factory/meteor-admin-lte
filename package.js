@@ -11,8 +11,7 @@ Package.onUse(function(api) {
 
   api.use([
     'templating',
-    'reactive-var',
-    'twbs:bootstrap@3.3.5'
+    'reactive-var'
   ], 'client');
 
   api.addFiles([
