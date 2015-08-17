@@ -176,7 +176,7 @@ function waitOnCSS (url, timeout) {
     },
 
     remove: function () {
-      $('link[url="' + url + '"]').remove();
+      $('link[href="' + url + '"]').remove();
     }
   };
 }
