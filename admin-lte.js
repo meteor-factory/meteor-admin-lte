@@ -23,9 +23,12 @@ Template.AdminLTE.onCreated(function () {
 
   fixed && $('body').addClass('fixed');
   sidebarMini && $('body').addClass('sidebar-mini');
+  $('body').addClass('skin-'+skin);
+
   self.removeClasses = function () {
     fixed && $('body').removeClass('fixed');
     sidebarMini && $('body').removeClass('sidebar-mini');
+    $('body').removeClass('skin-'+skin);
   }
 
   this.autorun(function () {
