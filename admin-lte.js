@@ -21,14 +21,38 @@ Template.AdminLTE.onCreated(function () {
   self.style = waitOnCSS(cssUrl());
   self.skin = waitOnCSS(skinUrl(skin));
 
+  //set classes on body
   fixed && $('body').addClass('fixed');
   sidebarMini && $('body').addClass('sidebar-mini');
   $('body').addClass('skin-'+skin);
 
+  //if {{#AdminLTE}} is destroyed, remove classes from body
   self.removeClasses = function () {
     fixed && $('body').removeClass('fixed');
     sidebarMini && $('body').removeClass('sidebar-mini');
     $('body').removeClass('skin-'+skin);
+  }
+
+  //If the body has a boxed layout, fix the sidebar bg position
+  var sidebar_bg = $(".control-sidebar-bg");
+  if ($("body").hasClass('layout-boxed')) {
+    sidebar_bg.css('position', 'absolute');
+    sidebar_bg.height($(".wrapper").height());
+  } else {
+    sidebar_bg.css({
+      'position': 'fixed',
+      'height': 'auto'
+    });
+  }
+
+  //If the body has a fixed layout, make the control sidebar fixed
+  if ($("body").hasClass('fixed')) {
+    $(".control-sidebar").css({
+      'position': 'fixed',
+      'max-height': '100%',
+      'overflow': 'auto',
+      'padding-bottom': '50px'
+    });
   }
 
   this.autorun(function () {
@@ -75,6 +99,23 @@ Template.AdminLTE.events({
         $("body").addClass('sidebar-open');
       }
     }
+  },
+
+  'click [data-toggle=control-sidebar]': function (e, t) {
+    e.preventDefault();
+
+    if ($("body").hasClass('control-sidebar-open')) {
+      $("body").removeClass('control-sidebar-open');
+    } else {
+      $('body').addClass('control-sidebar-open');
+    }
+
+    /* // not implemented: slide option. Should look something like this:
+      if (slide) {
+        sidebar.addClass('control-sidebar-open');
+        sidebar.removeClass('control-sidebar-open');
+      }
+    */
   },
 
   'click .content-wrapper': function (e, t) {
