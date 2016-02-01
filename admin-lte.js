@@ -121,12 +121,17 @@ Template.AdminLTE.events({
 });
 
 function cssUrl () {
-  return Meteor.absoluteUrl('packages/mfactory_admin-lte/css/AdminLTE.min.css');
+  return Meteor.absoluteUrl('packages/mfactory_admin-lte/css/AdminLTE.min.css', _absoluteUrlOptions());
 }
 
 function skinUrl (name) {
   return Meteor.absoluteUrl(
-    'packages/mfactory_admin-lte/css/skins/skin-' + name + '.min.css');
+    'packages/mfactory_admin-lte/css/skins/skin-' + name + '.min.css', _absoluteUrlOptions());
+}
+
+function _absoluteUrlOptions() {
+  //add secure option if we are https
+  return window.location.protocol.contains('https:') ? {secure: true} : {};
 }
 
 function waitOnCSS (url, timeout) {
